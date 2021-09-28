@@ -7,23 +7,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <context:component-scan base-package="ru.comavp.testspringproject"/>
+
     <context:property-placeholder location="classpath:musicPlayer.properties"/>
-
-    <bean id="rockMusicBean" class="ru.comavp.testspringproject.RockMusic"/>
-    <bean id="classicalMusicBean" class="ru.comavp.testspringproject.ClassicalMusic" factory-method="getClassicalMusic"/>
-    <bean id="rapMusicBean" class="ru.comavp.testspringproject.RockMusic"/>
-
-    <bean id="musicPlayerBean" class="ru.comavp.testspringproject.MusicPlayer" init-method="initMusicPlayer"
-          destroy-method="destroyMusicPlayer" scope="prototype">
-        <property name="musicList">
-            <list>
-                <ref bean="rockMusicBean"/>
-                <ref bean="classicalMusicBean"/>
-                <ref bean="rapMusicBean"/>
-            </list>
-        </property>
-        <property name="name" value="${musicPlayer.name}"/>
-        <property name="volume" value="${musicPlayer.volume}"/>
-    </bean>
 
 </beans>

@@ -1,15 +1,13 @@
 package ru.comavp.testspringproject;
 
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+
+@Component("myClassicalMusicId")
 public class ClassicalMusic implements Music {
-    private ClassicalMusic() {}
 
-    public static ClassicalMusic getClassicalMusic() {
-        System.out.println("Fabric method was called");
-        return new ClassicalMusic();
-    }
-
-    @Override
-    public String getSong() {
-        return "Classical music";
+    public ClassicalMusic() {
+        songList.addAll(Arrays.asList("First classical music", "Second classical music", "Third classical music"));
     }
 }
