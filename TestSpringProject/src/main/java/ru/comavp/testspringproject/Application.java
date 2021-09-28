@@ -1,17 +1,14 @@
 package ru.comavp.testspringproject;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Application {
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
         Computer computer = context.getBean("computer", Computer.class);
-        System.out.println(computer.playMusic(MusicTypeEnum.CLASSICAL_MUSIC));
-        System.out.println(computer.playMusic(MusicTypeEnum.ROCK_MUSIC));
-        System.out.println(computer.playMusic(MusicTypeEnum.RAP_MUSIC));
-
-        Music classicalMusic = context.getBean("myClassicalMusicId", Music.class);
-        System.out.println(classicalMusic.getSong(0));
+        for (int i = 0; i < 100; i++) {
+            System.out.println(computer.playMusic());
+        }
 
         MusicPlayer player = context.getBean("musicPlayer", MusicPlayer.class);
         System.out.println(player.getName());

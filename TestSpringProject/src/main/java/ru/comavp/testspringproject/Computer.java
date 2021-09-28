@@ -1,8 +1,5 @@
 package ru.comavp.testspringproject;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Computer {
     private long id;
     private MusicPlayer player;
@@ -12,7 +9,7 @@ public class Computer {
         this.player = musicPlayer;
     }
 
-    public String playMusic(final MusicTypeEnum musicType) {
-        return player.playMusic(musicType);
+    public String playMusic() {
+        return player.playMusic();
     }
 }

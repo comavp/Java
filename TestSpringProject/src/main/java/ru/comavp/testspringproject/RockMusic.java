@@ -1,10 +1,7 @@
 package ru.comavp.testspringproject;
 
-import org.springframework.stereotype.Component;
-
 import java.util.Arrays;
 
-@Component
 public class RockMusic implements Music {
 
     public RockMusic() {
