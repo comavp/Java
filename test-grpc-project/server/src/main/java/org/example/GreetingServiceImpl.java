@@ -11,11 +11,21 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
                          final StreamObserver<GreetingServiceOuterClass.HelloResponse> responseObserver) {
         System.out.println(request);
 
-        GreetingServiceOuterClass.HelloResponse response = GreetingServiceOuterClass.HelloResponse
-                .newBuilder()
-                .setGreeting("Hello, from gRPC server, " + request.getName())
-                .build();
-        responseObserver.onNext(response);
+        for (int i = 0; i < 10000; i++) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException exception) {
+                exception.printStackTrace();
+            }
+
+            GreetingServiceOuterClass.HelloResponse response = GreetingServiceOuterClass.HelloResponse
+                    .newBuilder()
+                    .setGreeting("Hello, from gRPC server, " + request.getName())
+                    .build();
+
+            responseObserver.onNext(response);
+        }
+
         responseObserver.onCompleted();
     }
 }
