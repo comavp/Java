@@ -1,15 +1,22 @@
 package org.springframework.beans.factory;
 
+import org.springframework.beans.factory.annotations.Autowired;
+import org.springframework.beans.factory.annotations.Resource;
 import org.springframework.beans.factory.stereotype.Component;
 import org.springframework.beans.factory.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 
 public class BeanFactory {
+
+    // todo заменить отладочные System.out.println на логирование
 
     private final Map<String, Object> singletons = new HashMap<>();
 
@@ -18,6 +25,7 @@ public class BeanFactory {
     }
 
     public void instantiate(final String basePackage) throws IOException, URISyntaxException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        System.out.println("Выполнение шага instantiate");
         final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         final String path = basePackage.replace('.', '/');
         final Enumeration<URL> resources = classLoader.getResources(path);
@@ -45,5 +53,33 @@ public class BeanFactory {
                 }
             }
         }
+    }
+
+    public void populateProperties() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        System.out.println("Выполнение шага populateProperties");
+        for (Object object : singletons.values()) {
+            for (Field field : object.getClass().getDeclaredFields()) {
+                if (field.isAnnotationPresent(Autowired.class)) {
+                    for (Object dependency : singletons.values()) {
+                        if (dependency.getClass().equals(field.getType())) {
+                            injectDependency(object, field, dependency);
+                        }
+                    }
+                } else if (field.isAnnotationPresent(Resource.class)) {
+                    if (singletons.containsKey(field.getName())) {
+                        final Object dependency = singletons.get(field.getName());
+                        injectDependency(object, field, dependency);
+                    }
+                }
+            }
+        }
+    }
+
+    private void injectDependency(final Object bean, final Field field, final Object dependency) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        System.out.println("Внедрение зависимости");
+        final String setterName = "set" + field.getName().substring(0, 1).toUpperCase()
+                + field.getName().substring(1);
+        final Method setter = bean.getClass().getMethod(setterName, dependency.getClass());
+        setter.invoke(bean, dependency);
     }
 }
