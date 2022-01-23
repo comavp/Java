@@ -82,4 +82,21 @@ public class BeanFactory {
         final Method setter = bean.getClass().getMethod(setterName, dependency.getClass());
         setter.invoke(bean, dependency);
     }
+
+    public void injectBeanNames() {
+        for (String name : singletons.keySet()) {
+            final Object bean = singletons.get(name);
+            if (bean instanceof BeanNameAware) {
+                ((BeanNameAware) bean).setBeanName(name);
+            }
+        }
+    }
+
+    public void injectBeanFactories() {
+        for (Object bean : singletons.values()) {
+            if (bean instanceof BeanFactoryAware) {
+                ((BeanFactoryAware) bean).setBeanFactory(this);
+            }
+        }
+    }
 }

@@ -11,10 +11,14 @@ public class Main {
             final BeanFactory beanFactory = new BeanFactory();
             beanFactory.instantiate("com.kciray");
             beanFactory.populateProperties();
+            beanFactory.injectBeanNames();
+            beanFactory.injectBeanFactories();
             final ProductService productService = (ProductService) beanFactory.getBean("productService");
             System.out.println(productService);
             System.out.println(productService.getPromotionService());
             System.out.println(productService.getPriceCalculatorService());
+            System.out.println("Bean name: " + productService.getBeanName());
+            System.out.println("All beans: " + productService.getBeanFactory());
         } catch (final Exception e) {
             System.out.println("Что-то пошло не так");
         }
