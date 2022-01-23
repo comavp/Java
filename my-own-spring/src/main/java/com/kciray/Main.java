@@ -13,12 +13,13 @@ public class Main {
             beanFactory.populateProperties();
             beanFactory.injectBeanNames();
             beanFactory.injectBeanFactories();
+            beanFactory.initializeBeans();
             final ProductService productService = (ProductService) beanFactory.getBean("productService");
             System.out.println(productService);
             System.out.println(productService.getPromotionService());
             System.out.println(productService.getPriceCalculatorService());
             System.out.println("Bean name: " + productService.getBeanName());
-            System.out.println("All beans: " + productService.getBeanFactory());
+            System.out.println("Bean factory: " + productService.getBeanFactory());
         } catch (final Exception e) {
             System.out.println("Что-то пошло не так");
         }

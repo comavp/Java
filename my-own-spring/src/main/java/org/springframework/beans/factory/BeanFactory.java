@@ -2,6 +2,7 @@ package org.springframework.beans.factory;
 
 import org.springframework.beans.factory.annotations.Autowired;
 import org.springframework.beans.factory.annotations.Resource;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.stereotype.Component;
 import org.springframework.beans.factory.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class BeanFactory {
     // todo заменить отладочные System.out.println на логирование
 
     private final Map<String, Object> singletons = new HashMap<>();
+    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
     public Object getBean(final String beanName) {
         return singletons.get(beanName);
@@ -96,6 +98,21 @@ public class BeanFactory {
         for (Object bean : singletons.values()) {
             if (bean instanceof BeanFactoryAware) {
                 ((BeanFactoryAware) bean).setBeanFactory(this);
+            }
+        }
+    }
+
+    public void initializeBeans() {
+        for (String beanName : singletons.keySet()) {
+            final Object bean = singletons.get(beanName);
+            for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
+                beanPostProcessor.postProcessBeforeInitialization(bean, beanName);
+            }
+            if (bean instanceof InitializingBean) {
+                ((InitializingBean) bean).afterPropertiesSet();
+            }
+            for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
+                beanPostProcessor.postProcessAfterInitialization(bean, beanName);
             }
         }
     }

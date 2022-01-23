@@ -3,12 +3,13 @@ package com.kciray;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotations.Autowired;
 import org.springframework.beans.factory.annotations.Resource;
 import org.springframework.beans.factory.stereotype.Service;
 
 @Service
-public class ProductService implements BeanNameAware, BeanFactoryAware {
+public class ProductService implements BeanNameAware, BeanFactoryAware, InitializingBean {
 
     @Autowired
     private PromotionService promotionService;
@@ -48,5 +49,10 @@ public class ProductService implements BeanNameAware, BeanFactoryAware {
 
     public BeanFactory getBeanFactory() {
         return this.beanFactory;
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        System.out.println("Тут происходит инициализация бина " + this.getBeanName());
     }
 }
