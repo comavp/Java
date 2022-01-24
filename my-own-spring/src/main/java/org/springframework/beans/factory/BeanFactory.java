@@ -134,4 +134,8 @@ public class BeanFactory {
             }
         }
     }
+
+    public Map<String, Object> getSingletons() {
+        return this.singletons;
+    }
 }

@@ -1,6 +1,7 @@
 package com.kciray;
 
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.CommonAnnotationBeanPostProcessor;
 
 public class Main {
@@ -9,16 +10,9 @@ public class Main {
 
     public static void main(String[] args)  {
         try {
-            final BeanFactory beanFactory = new BeanFactory();
-            beanFactory.addPostProcessor(new CommonAnnotationBeanPostProcessor());
-            beanFactory.addPostProcessor(new CustomPostProcessor());
-            beanFactory.instantiate("com.kciray");
-            beanFactory.populateProperties();
-            beanFactory.injectBeanNames();
-            beanFactory.injectBeanFactories();
-            beanFactory.initializeBeans();
+            final ApplicationContext context = new ApplicationContext("com.kciray");
 
-            final ProductService productService = (ProductService) beanFactory.getBean("productService");
+            final ProductService productService = (ProductService) context.getBean("productService");
 
             System.out.println(productService);
             System.out.println(productService.getPromotionService());
@@ -26,7 +20,7 @@ public class Main {
             System.out.println("Bean name: " + productService.getBeanName());
             System.out.println("Bean factory: " + productService.getBeanFactory());
 
-            beanFactory.close();
+            context.close();
         } catch (final Exception e) {
             System.out.println("Что-то пошло не так");
         }
