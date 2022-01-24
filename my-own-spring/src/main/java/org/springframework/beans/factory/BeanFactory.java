@@ -116,4 +116,9 @@ public class BeanFactory {
             }
         }
     }
+
+    public void addPostProcessor(final BeanPostProcessor beanPostProcessor) {
+        this.beanPostProcessors.add(beanPostProcessor);
+    }
+
 }

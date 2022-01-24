@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotations.Autowired;
 import org.springframework.beans.factory.annotations.Resource;
 import org.springframework.beans.factory.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class ProductService implements BeanNameAware, BeanFactoryAware, InitializingBean {
 
@@ -54,5 +56,10 @@ public class ProductService implements BeanNameAware, BeanFactoryAware, Initiali
     @Override
     public void afterPropertiesSet() {
         System.out.println("Тут происходит инициализация бина " + this.getBeanName());
+    }
+
+    @PostConstruct
+    public void initBeforeAfterPropertiesSet() {
+        System.out.println("Тут происходит инициализация бина " + this.getBeanName() + " с помощью @PostConstruct");
     }
 }
