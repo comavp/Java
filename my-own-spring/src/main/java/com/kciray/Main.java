@@ -25,6 +25,8 @@ public class Main {
             System.out.println(productService.getPriceCalculatorService());
             System.out.println("Bean name: " + productService.getBeanName());
             System.out.println("Bean factory: " + productService.getBeanFactory());
+
+            beanFactory.close();
         } catch (final Exception e) {
             System.out.println("Что-то пошло не так");
         }

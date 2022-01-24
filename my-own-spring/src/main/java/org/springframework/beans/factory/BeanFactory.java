@@ -6,6 +6,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.stereotype.Component;
 import org.springframework.beans.factory.stereotype.Service;
 
+import javax.annotation.PreDestroy;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -121,4 +122,16 @@ public class BeanFactory {
         this.beanPostProcessors.add(beanPostProcessor);
     }
 
+    public void close() throws InvocationTargetException, IllegalAccessException {
+        for (Object bean : singletons.values()) {
+            for (Method method : bean.getClass().getMethods()) {
+                if (method.isAnnotationPresent(PreDestroy.class)) {
+                    method.invoke(bean);
+                }
+            }
+            if (bean instanceof DisposableBean) {
+                ((DisposableBean) bean).destroy();
+            }
+        }
+    }
 }

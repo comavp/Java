@@ -1,17 +1,15 @@
 package com.kciray;
 
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanNameAware;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.*;
 import org.springframework.beans.factory.annotations.Autowired;
 import org.springframework.beans.factory.annotations.Resource;
 import org.springframework.beans.factory.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 @Service
-public class ProductService implements BeanNameAware, BeanFactoryAware, InitializingBean {
+public class ProductService implements BeanNameAware, BeanFactoryAware, InitializingBean, DisposableBean {
 
     @Autowired
     private PromotionService promotionService;
@@ -61,5 +59,15 @@ public class ProductService implements BeanNameAware, BeanFactoryAware, Initiali
     @PostConstruct
     public void initBeforeAfterPropertiesSet() {
         System.out.println("Тут происходит инициализация бина " + this.getBeanName() + " с помощью @PostConstruct");
+    }
+
+    @Override
+    public void destroy() {
+        System.out.println("Тут происходит удаление бина " + this.getBeanName());
+    }
+
+    @PreDestroy
+    public void preDestroyMethod() {
+        System.out.println("Тут происходит удаление бина " + this.getBeanName() + " с помощью @PreDestroy");
     }
 }
