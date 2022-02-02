@@ -36,8 +36,7 @@ public class DesignTacoController {
 
     @GetMapping
     public String showDesignForm(final Model model) {
-        Arrays.stream(Type.values()).forEach(type -> model.addAttribute(type.toString().toLowerCase(),
-                TEST_INGREDIENTS.stream().filter(ingredient -> ingredient.getType().equals(type)).collect(Collectors.toList())));
+        addIngredientsIntoDesignView(model);
 
         model.addAttribute("taco", new Taco());
 
@@ -45,8 +44,9 @@ public class DesignTacoController {
     }
 
     @PostMapping
-    public String processDesign(@Valid final Taco taco, final Errors errors) {
+    public String processDesign(@Valid final Taco taco, final Errors errors, final Model model) {
         if (errors.hasErrors()) {
+            addIngredientsIntoDesignView(model);
             return "design";
         }
 
@@ -54,5 +54,10 @@ public class DesignTacoController {
         log.info("Processing design: " + taco);
 
         return "redirect:/orders/current";
+    }
+
+    private void addIngredientsIntoDesignView(final Model model) {
+        Arrays.stream(Type.values()).forEach(type -> model.addAttribute(type.toString().toLowerCase(),
+                TEST_INGREDIENTS.stream().filter(ingredient -> ingredient.getType().equals(type)).collect(Collectors.toList())));
     }
 }

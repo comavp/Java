@@ -12,6 +12,7 @@ public class Taco {
     @NotNull
     @Size(min=5, message="Name must be at least 5 characters long")
     private String name;
-    @Size(min=1, message="You must choose at least 1 ingredient")
-    private List<Ingredient> ingredients;
+    @NotNull(message="You must choose at least 1 ingredient")
+    @Size(min=1)
+    private List<Ingredient> ingredients; // todo ошибка в случае, если не один ингредиент не был выбран не отображается
 }
