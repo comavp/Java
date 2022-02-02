@@ -39,7 +39,7 @@ public class DesignTacoController {
         Arrays.stream(Type.values()).forEach(type -> model.addAttribute(type.toString().toLowerCase(),
                 TEST_INGREDIENTS.stream().filter(ingredient -> ingredient.getType().equals(type)).collect(Collectors.toList())));
 
-        model.addAttribute("design", new Taco());
+        model.addAttribute("taco", new Taco());
 
         return "design";
     }
