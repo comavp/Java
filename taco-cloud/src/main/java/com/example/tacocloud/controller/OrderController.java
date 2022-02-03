@@ -1,6 +1,6 @@
 package com.example.tacocloud.controller;
 
-import com.example.tacocloud.Order;
+import com.example.tacocloud.model.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
