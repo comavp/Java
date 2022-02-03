@@ -1,15 +1,17 @@
 package com.example.tacocloud.controller;
 
-import com.example.tacocloud.Ingredient;
-import com.example.tacocloud.Ingredient.Type;
-import com.example.tacocloud.Taco;
+import com.example.tacocloud.model.Ingredient;
+import com.example.tacocloud.model.Ingredient.Type;
+import com.example.tacocloud.model.Taco;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,19 +36,28 @@ public class DesignTacoController {
 
     @GetMapping
     public String showDesignForm(final Model model) {
-        Arrays.stream(Type.values()).forEach(type -> model.addAttribute(type.toString().toLowerCase(),
-                TEST_INGREDIENTS.stream().filter(ingredient -> ingredient.getType().equals(type)).collect(Collectors.toList())));
+        addIngredientsIntoDesignView(model);
 
-        model.addAttribute("design", new Taco());
+        model.addAttribute("taco", new Taco());
 
         return "design";
     }
 
     @PostMapping
-    public String processDesign(final Taco taco) {
+    public String processDesign(@Valid final Taco taco, final Errors errors, final Model model) {
+        if (errors.hasErrors()) {
+            addIngredientsIntoDesignView(model);
+            return "design";
+        }
+
         // todo save the taco design
         log.info("Processing design: " + taco);
 
         return "redirect:/orders/current";
+    }
+
+    private void addIngredientsIntoDesignView(final Model model) {
+        Arrays.stream(Type.values()).forEach(type -> model.addAttribute(type.toString().toLowerCase(),
+                TEST_INGREDIENTS.stream().filter(ingredient -> ingredient.getType().equals(type)).collect(Collectors.toList())));
     }
 }
