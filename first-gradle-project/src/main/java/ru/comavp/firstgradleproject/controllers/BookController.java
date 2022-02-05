@@ -2,9 +2,9 @@ package ru.comavp.firstgradleproject.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.comavp.firstgradleproject.dataacess.dto.AddBookRequest;
-import ru.comavp.firstgradleproject.dataacess.mappers.BookToDtoMapper;
-import ru.comavp.firstgradleproject.dataacess.model.Book;
+import ru.comavp.firstgradleproject.dataaccess.dto.AddBookRequest;
+import ru.comavp.firstgradleproject.dataaccess.mappers.BookToDtoMapper;
+import ru.comavp.firstgradleproject.dataaccess.model.Book;
 import ru.comavp.firstgradleproject.service.BookService;
 
 import java.util.List;

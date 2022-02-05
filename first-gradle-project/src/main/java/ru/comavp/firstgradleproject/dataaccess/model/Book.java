@@ -1,4 +1,4 @@
-package ru.comavp.firstgradleproject.dataacess.model;
+package ru.comavp.firstgradleproject.dataaccess.model;
 
 import lombok.Value;
 
