@@ -48,8 +48,6 @@ public class DesignTacoController {
     public String showDesignForm(final Model model) {
         addIngredientsIntoDesignView(model);
 
-        model.addAttribute("taco", new Taco());
-
         return "design";
     }
 

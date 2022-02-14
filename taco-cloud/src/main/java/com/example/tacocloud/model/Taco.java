@@ -10,6 +10,8 @@ import java.util.List;
 @Data
 public class Taco {
 
+    // todo не отображается валидационные сообщения
+
     private Long id;
     private Date createdAt;
 
@@ -18,5 +20,5 @@ public class Taco {
     private String name;
     @NotNull(message="You must choose at least 1 ingredient")
     @Size(min=1)
-    private List<Ingredient> ingredients; // todo ошибка в случае, если не один ингредиент не был выбран не отображается
+    private List<Ingredient> ingredients;
 }
