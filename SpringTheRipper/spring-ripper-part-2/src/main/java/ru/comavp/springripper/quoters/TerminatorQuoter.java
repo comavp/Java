@@ -3,7 +3,7 @@ package ru.comavp.springripper.quoters;
 import javax.annotation.PostConstruct;
 
 @Profiling
-@DeprecatedClass(T100.class)
+@DeprecatedClass(newImpl = T100.class)
 public class TerminatorQuoter implements Quoter {
 
     private String message;

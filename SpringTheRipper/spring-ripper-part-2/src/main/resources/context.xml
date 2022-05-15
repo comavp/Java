@@ -9,6 +9,8 @@
 
     <context:annotation-config/>
 
+    <bean class="ru.comavp.springripper.beanpostprocessors.DeprecationHandlerBeanFactoryPostProcessor" />
+
     <bean class="ru.comavp.springripper.quoters.TerminatorQuoter" id="terminatorQuoter">
         <property name="message" value="I'll be back"/>
     </bean>

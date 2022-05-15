@@ -8,6 +8,6 @@ public class QuoterTest {
     @Test
     public void testSayQuote() throws InterruptedException {
         final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
-        //context.getBean(Quoter.class).sayQuote();
+        context.getBean(Quoter.class).sayQuote();
     }
 }
