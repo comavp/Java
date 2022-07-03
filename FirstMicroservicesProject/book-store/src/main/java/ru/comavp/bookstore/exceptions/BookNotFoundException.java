@@ -1,4 +1,4 @@
-package ru.comavp.firstgradleproject.exceptions;
+package ru.comavp.bookstore.exceptions;
 
 public class BookNotFoundException extends RuntimeException {
 

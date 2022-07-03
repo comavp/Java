@@ -1,7 +1,6 @@
 package ru.comavp.authservice;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;

@@ -1,4 +1,4 @@
-package ru.comavp.firstgradleproject.dataaccess.entity;
+package ru.comavp.bookstore.dataaccess.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

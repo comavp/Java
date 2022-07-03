@@ -1,8 +1,8 @@
-package ru.comavp.firstgradleproject.dataaccess.mappers;
+package ru.comavp.bookstore.dataaccess.mappers;
 
 import org.mapstruct.Mapper;
-import ru.comavp.firstgradleproject.dataaccess.entity.BookEntity;
-import ru.comavp.firstgradleproject.dataaccess.model.Book;
+import ru.comavp.bookstore.dataaccess.entity.BookEntity;
+import ru.comavp.bookstore.dataaccess.model.Book;
 
 @Mapper(componentModel = "spring")
 public interface BookToEntityMapper {

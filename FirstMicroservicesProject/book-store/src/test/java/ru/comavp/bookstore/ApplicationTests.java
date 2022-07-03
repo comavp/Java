@@ -1,4 +1,4 @@
-package ru.comavp.firstgradleproject;
+package ru.comavp.bookstore;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

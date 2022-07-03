@@ -1,4 +1,4 @@
-package ru.comavp.firstgradleproject.dataaccess.dto;
+package ru.comavp.bookstore.dataaccess.dto;
 
 import lombok.Data;
 

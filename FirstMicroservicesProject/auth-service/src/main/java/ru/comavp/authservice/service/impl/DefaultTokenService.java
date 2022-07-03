@@ -24,7 +24,7 @@ public class DefaultTokenService implements TokenService {
         Instant exp = now.plus(5, ChronoUnit.MINUTES);
 
         return JWT.create()
-                .withIssuer("autho-service")
+                .withIssuer("auth-service")
                 .withAudience("bookstore")
                 .withSubject(clientId)
                 .withIssuedAt(Date.from(now))

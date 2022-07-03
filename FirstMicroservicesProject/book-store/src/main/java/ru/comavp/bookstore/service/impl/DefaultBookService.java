@@ -1,13 +1,13 @@
-package ru.comavp.firstgradleproject.service.impl;
+package ru.comavp.bookstore.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.comavp.firstgradleproject.dataaccess.entity.BookEntity;
-import ru.comavp.firstgradleproject.exceptions.BookNotFoundException;
-import ru.comavp.firstgradleproject.dataaccess.mappers.BookToEntityMapper;
-import ru.comavp.firstgradleproject.dataaccess.model.Book;
-import ru.comavp.firstgradleproject.dataaccess.repository.BookRepository;
-import ru.comavp.firstgradleproject.service.BookService;
+import ru.comavp.bookstore.dataaccess.entity.BookEntity;
+import ru.comavp.bookstore.exceptions.BookNotFoundException;
+import ru.comavp.bookstore.dataaccess.mappers.BookToEntityMapper;
+import ru.comavp.bookstore.dataaccess.model.Book;
+import ru.comavp.bookstore.dataaccess.repository.BookRepository;
+import ru.comavp.bookstore.service.BookService;
 
 import java.util.ArrayList;
 import java.util.List;

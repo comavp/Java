@@ -1,7 +1,7 @@
-package ru.comavp.firstgradleproject.dataaccess.repository;
+package ru.comavp.bookstore.dataaccess.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import ru.comavp.firstgradleproject.dataaccess.entity.BookEntity;
+import ru.comavp.bookstore.dataaccess.entity.BookEntity;
 
 import java.util.List;
 

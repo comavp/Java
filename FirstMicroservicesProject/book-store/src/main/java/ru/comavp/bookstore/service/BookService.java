@@ -1,6 +1,6 @@
-package ru.comavp.firstgradleproject.service;
+package ru.comavp.bookstore.service;
 
-import ru.comavp.firstgradleproject.dataaccess.model.Book;
+import ru.comavp.bookstore.dataaccess.model.Book;
 
 import java.util.List;
 
