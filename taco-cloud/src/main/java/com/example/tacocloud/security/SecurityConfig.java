@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -15,23 +14,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.ldapAuthentication()
-                .contextSource()
-                    .root("dc=tacocloud,dc=com")
-                    .ldif("classpath:users.ldif")
-                .and()
-                .userSearchBase("ou=people")
-                .userSearchFilter("(uid={0})")
-                .groupSearchBase("ou=groups")
-                .groupSearchFilter("member={0}")
-                .passwordCompare()
-                    .passwordEncoder(passwordEncoder())
-                    .passwordAttribute("userPassword");
+        auth.userDetailsService(userDetailsService())
+                .passwordEncoder(passwordEncoder());
     }
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        //return new BCryptPasswordEncoder();
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 }
