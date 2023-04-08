@@ -1,0 +1,4 @@
+.my-button:shiny {
+    -fx-text-fill: red;
+    -fx-background-color: gold;
+}
