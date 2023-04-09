@@ -2,9 +2,9 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import ru.comavp.javafxtutorial.application.ShinyButton?>
 
-<?import ru.comavp.javaxtutorial.ShinyButton?>
-<VBox prefHeight="139.0" prefWidth="372.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.comavp.javaxtutorial.MainController" stylesheets="styles.css">
+<VBox prefHeight="139.0" prefWidth="372.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.comavp.javafxtutorial.controller.MainController">
     <Label fx:id="mainTitle" text="Hello world!" />
     <Label fx:id="subTitle" text="This is a simple demo application." />
     <Button fx:id="mainButton" onAction="#buttonClicked" text="Click me!" />
@@ -13,5 +13,7 @@
         <ShinyButton fx:id="secondShinyButton">2</ShinyButton>
         <ShinyButton fx:id="thirdShinyButton">3</ShinyButton>
         <ShinyButton fx:id="fourthShinyButton">4</ShinyButton>
+        <Label fx:id="weatherLabel"/>
+        <Button onAction="#loadWeatherForecast">Get weather</Button>
     </HBox>
 </VBox>

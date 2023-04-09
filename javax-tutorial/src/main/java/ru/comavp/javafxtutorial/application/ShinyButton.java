@@ -1,4 +1,4 @@
-package ru.comavp.javaxtutorial;
+package ru.comavp.javafxtutorial.application;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
