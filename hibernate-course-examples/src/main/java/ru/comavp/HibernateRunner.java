@@ -1,5 +1,6 @@
 package ru.comavp;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -20,7 +21,8 @@ public class HibernateRunner {
 
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(User.class);
-        configuration.addAttributeConverter(BirthdayConverter.class, true);
+        configuration.addAttributeConverter(new BirthdayConverter());
+        configuration.registerTypeOverride(new JsonBinaryType());
         configuration.configure();
 
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
@@ -33,6 +35,12 @@ public class HibernateRunner {
                     .lastName("Richer")
                     .birthDate(new Birthday(LocalDate.of(1993, 10, 19)))
                     .role(Role.ADMIN)
+                    .info("""
+                            {
+                                "name": "Jon",
+                                "age": "32"
+                            }
+                            """)
                     .build();
             session.save(user);
 

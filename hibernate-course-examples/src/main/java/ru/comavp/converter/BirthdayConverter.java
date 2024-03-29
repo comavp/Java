@@ -3,9 +3,11 @@ package ru.comavp.converter;
 import ru.comavp.entity.Birthday;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.sql.Date;
 import java.util.Optional;
 
+@Converter(autoApply = true)
 public class BirthdayConverter implements AttributeConverter<Birthday, Date> {
 
     @Override
