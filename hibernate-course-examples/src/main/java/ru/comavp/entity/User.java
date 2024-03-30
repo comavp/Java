@@ -1,10 +1,12 @@
 package ru.comavp.entity;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import ru.comavp.converter.BirthdayConverter;
 
 import javax.persistence.*;
@@ -15,6 +17,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@TypeDef(typeClass = JsonBinaryType.class, name = "jsonb")
 public class User {
 
     @Id
