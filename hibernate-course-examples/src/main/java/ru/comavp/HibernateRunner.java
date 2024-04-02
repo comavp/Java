@@ -1,52 +1,44 @@
 package ru.comavp;
 
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import ru.comavp.converter.BirthdayConverter;
-import ru.comavp.entity.Birthday;
-import ru.comavp.entity.Role;
+import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.comavp.entity.User;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
+
+import static ru.comavp.util.HibernateUtil.buildSessionFactory;
 
 public class HibernateRunner {
 
+    private static final Logger log = LoggerFactory.getLogger(HibernateRunner.class);
+
     public static void main(String[] args) throws SQLException {
-//        BlockingDeque<Connection> pool = null;
-//        Connection connection = pool.take();
-//        Connection connection = DriverManager.getConnection("db.url", "db.username", "db.password");
+        User user = User.builder()
+                .userName("inan@gmail.com")
+                .firstName("Ivan")
+                .lastName("Ivanov")
+                .build();
 
-        Configuration configuration = new Configuration();
-        configuration.addAnnotatedClass(User.class);
-        configuration.addAttributeConverter(new BirthdayConverter());
-        configuration.registerTypeOverride(new JsonBinaryType());
-        configuration.configure();
+        log.info("User entity is in transient state, object: {}", user);
 
-        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
-             Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
+        try (SessionFactory sessionFactory = buildSessionFactory()) {
+            Session session = sessionFactory.openSession();
+            try (session) {
+                Transaction transaction = session.beginTransaction();
+                log.trace("Transaction is created, {}", transaction);
 
-            User user = User.builder()
-                    .userName("ripper123@google.com")
-                    .firstName("Jon")
-                    .lastName("Richer")
-                    .birthDate(new Birthday(LocalDate.of(1993, 10, 19)))
-                    .role(Role.ADMIN)
-                    .info("""
-                            {
-                                "name": "Jon",
-                                "age": "32"
-                            }
-                            """)
-                    .build();
-            session.save(user);
+                session.saveOrUpdate(user);
+                log.trace("User is persistent state: {}, session {}", user, session);
 
-            session.getTransaction().commit();
-
-            System.out.println("User created");
+                session.getTransaction().commit();
+            }
+            log.warn("User in detached state: {}, session is closed {}", user, session);
+        } catch (Exception e) {
+            log.error("Exception occurred", e);
+            throw e;
         }
     }
 }
