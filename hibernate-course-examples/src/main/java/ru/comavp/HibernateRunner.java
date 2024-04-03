@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.comavp.entity.PersonalInfo;
 import ru.comavp.entity.User;
 
 import java.sql.SQLException;
@@ -17,9 +18,11 @@ public class HibernateRunner {
 
     public static void main(String[] args) throws SQLException {
         User user = User.builder()
-                .userName("inan@gmail.com")
-                .firstName("Ivan")
-                .lastName("Ivanov")
+                .userName("inan123@gmail.com")
+                .personalInfo(PersonalInfo.builder()
+                        .firstName("Ivan")
+                        .lastName("Ivanov")
+                        .build())
                 .build();
 
         log.info("User entity is in transient state, object: {}", user);

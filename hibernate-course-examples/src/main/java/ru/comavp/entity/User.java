@@ -22,11 +22,9 @@ public class User {
 
     @Id
     private String userName;
-    private String firstName;
-    private String lastName;
-    @Convert(converter = BirthdayConverter.class)
-    @Column(name = "birth_date")
-    private Birthday birthDate;
+    @Embedded
+    @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date"))
+    PersonalInfo personalInfo;
     @Enumerated(EnumType.STRING)
     private Role role;
     @Type(type = "jsonb")
