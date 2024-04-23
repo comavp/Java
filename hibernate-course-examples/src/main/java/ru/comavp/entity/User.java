@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import ru.comavp.converter.BirthdayConverter;
 
 import javax.persistence.*;
 
@@ -21,6 +20,13 @@ import javax.persistence.*;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "user_gen")
+    //@SequenceGenerator(name = "user_gen", sequenceName = "users_user_id_seq", schema = "hibernate_course_schema", allocationSize = 1)
+    @TableGenerator(name = "user_gen", table = "all_sequence", schema = "hibernate_course_schema", allocationSize = 1,
+            pkColumnName = "table_name", valueColumnName = "pk_value")
+    @Column(name = "user_id")
+    private Long id;
+    @Column(unique = true)
     private String userName;
     @Embedded
     @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date"))
