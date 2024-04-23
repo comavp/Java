@@ -5,10 +5,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.comavp.entity.Birthday;
 import ru.comavp.entity.PersonalInfo;
 import ru.comavp.entity.User;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import static ru.comavp.util.HibernateUtil.buildSessionFactory;
 
@@ -22,6 +24,7 @@ public class HibernateRunner {
                 .personalInfo(PersonalInfo.builder()
                         .firstName("Ivan")
                         .lastName("Ivanov")
+                        .birthDate(new Birthday(LocalDate.of(1968, 3, 11)))
                         .build())
                 .build();
 
@@ -39,6 +42,16 @@ public class HibernateRunner {
                 session.getTransaction().commit();
             }
             log.warn("User in detached state: {}, session is closed {}", user, session);
+            try (Session secondSession = sessionFactory.openSession()) {
+                PersonalInfo id = PersonalInfo.builder()
+                        .firstName("Ivan")
+                        .lastName("Ivanov")
+                        .birthDate(new Birthday(LocalDate.of(1968, 3, 11)))
+                        .build();
+
+                User secondUser = secondSession.get(User.class, id);
+                log.info("User {} was found by EmbeddedId", secondUser);
+            }
         } catch (Exception e) {
             log.error("Exception occurred", e);
             throw e;

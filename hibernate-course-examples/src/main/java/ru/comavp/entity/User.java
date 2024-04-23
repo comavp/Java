@@ -19,16 +19,9 @@ import javax.persistence.*;
 @TypeDef(typeClass = JsonBinaryType.class, name = "jsonb")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "user_gen")
-    //@SequenceGenerator(name = "user_gen", sequenceName = "users_user_id_seq", schema = "hibernate_course_schema", allocationSize = 1)
-    @TableGenerator(name = "user_gen", table = "all_sequence", schema = "hibernate_course_schema", allocationSize = 1,
-            pkColumnName = "table_name", valueColumnName = "pk_value")
-    @Column(name = "user_id")
-    private Long id;
     @Column(unique = true)
     private String userName;
-    @Embedded
+    @EmbeddedId
     @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date"))
     PersonalInfo personalInfo;
     @Enumerated(EnumType.STRING)
