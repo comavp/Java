@@ -48,6 +48,9 @@
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>2.1.0.Beta1</version>
+                <configuration>
+                    <java-opts>--add-opens java.base/java.util=ALL-UNNAMED</java-opts>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>install</phase>
