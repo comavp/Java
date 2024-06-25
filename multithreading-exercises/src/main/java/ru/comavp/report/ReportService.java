@@ -9,6 +9,7 @@ import ru.comavp.client.ProductClient;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class ReportService {
@@ -113,9 +114,30 @@ public class ReportService {
     public void getReportUsingCompletableFuture() {
         log.info("Report generation started");
 
-        // todo
+        List<CompletableFuture<String>> tasksList = List.of(
+                CompletableFuture.supplyAsync(() -> customerClient.getCustomersInfo()),
+                CompletableFuture.supplyAsync(() -> marketingClient.getMarketingInfo()),
+                CompletableFuture.supplyAsync(() -> orderClient.getOrderInfo()),
+                CompletableFuture.supplyAsync(() -> productClient.getProductsInfo())
+        );
 
-        log.info("Report generation finished: {}", "report");
+        List<String> clientsInfoList;
+
+        try {
+            clientsInfoList = CompletableFuture.allOf(tasksList.toArray(new CompletableFuture[0]))
+                    .thenApply(x -> tasksList.stream()
+                            .map(CompletableFuture::join)
+                            .toList())
+                    .get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        log.info("Report generation finished: {}", generateReport(clientsInfoList));
+    }
+
+    private String generateReport(List<String> clientsInfoList) {
+        return clientsInfoList.stream().collect(Collectors.joining(" "));
     }
 
     private String generateReport(String customersInfo, String marketingInfo, String ordersInfo, String productsInfo) {
