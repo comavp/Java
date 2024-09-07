@@ -12,6 +12,7 @@ import ru.comavp.entity.User;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Date;
 
 import static ru.comavp.util.HibernateUtil.buildSessionFactory;
 
@@ -20,14 +21,18 @@ public class HibernateRunner {
     private static final Logger log = LoggerFactory.getLogger(HibernateRunner.class);
 
     public static void main(String[] args) throws SQLException {
+        Date date = new Date();
         User user = User.builder()
                 .userName("inan123@gmail.com")
                 .personalInfo(PersonalInfo.builder()
-                        .firstName("B")
+                        .firstName("C")
                         .lastName("Ivanov")
                         .birthDate(new Birthday(LocalDate.of(1968, 3, 11)))
                         .build())
                 .role(Role.ADMIN)
+                .firstDate(date)
+                .secondDate(date)
+                .thirdDate(date)
                 .build();
 
         log.info("User entity is in transient state, object: {}", user);

@@ -6,6 +6,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "users", schema = "hibernate_course_schema")
@@ -23,8 +24,14 @@ public class User {
     @Column(unique = true)
     private String userName;
     @Enumerated(EnumType.STRING)
-    @Transient
     private Role role;
     @Type(type = "jsonb")
     private String info;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date firstDate;
+    @Temporal(TemporalType.DATE)
+    private Date secondDate;
+    @Temporal(TemporalType.TIME)
+    private Date thirdDate;
 }
