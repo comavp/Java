@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.comavp.entity.Birthday;
 import ru.comavp.entity.PersonalInfo;
+import ru.comavp.entity.Role;
 import ru.comavp.entity.User;
 
 import java.sql.SQLException;
@@ -22,10 +23,11 @@ public class HibernateRunner {
         User user = User.builder()
                 .userName("inan123@gmail.com")
                 .personalInfo(PersonalInfo.builder()
-                        .firstName("Ivan")
+                        .firstName("B")
                         .lastName("Ivanov")
                         .birthDate(new Birthday(LocalDate.of(1968, 3, 11)))
                         .build())
+                .role(Role.ADMIN)
                 .build();
 
         log.info("User entity is in transient state, object: {}", user);
