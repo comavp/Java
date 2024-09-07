@@ -1,12 +1,14 @@
 package ru.comavp.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "users", schema = "hibernate_course_schema")
@@ -27,11 +29,4 @@ public class User {
     private Role role;
     @Type(type = "jsonb")
     private String info;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date firstDate;
-    @Temporal(TemporalType.DATE)
-    private Date secondDate;
-    @Temporal(TemporalType.TIME)
-    private Date thirdDate;
 }
