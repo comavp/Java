@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users", schema = "hibernate_course_schema")
 @Data
+@ToString(exclude = "company")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -31,7 +32,7 @@ public class User {
     @Type(type = "jsonb")
     private String info;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 }
