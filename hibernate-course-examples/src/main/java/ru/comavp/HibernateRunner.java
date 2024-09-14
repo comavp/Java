@@ -17,12 +17,12 @@ public class HibernateRunner {
 
     public static void main(String[] args) throws SQLException {
         Company company = Company.builder()
-                .name("Amazon")
+                .name("Apple")
                 .build();
         User user = User.builder()
                 .userName("inan123@gmail.com")
                 .personalInfo(PersonalInfo.builder()
-                        .firstName("Jack")
+                        .firstName("Bill")
                         .lastName("Ivanov")
                         .birthDate(new Birthday(LocalDate.of(1968, 3, 11)))
                         .build())
@@ -34,10 +34,10 @@ public class HibernateRunner {
              Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-//            session.saveOrUpdate(company);
-//            session.saveOrUpdate(user);
+            Long id = (Long) session.save(user);
+            User savedUser = session.get(User.class, id);
             User userFromDb = session.get(User.class, 11L);
-            log.info("User: {}", userFromDb);
+            session.evict(userFromDb);
 
             session.getTransaction().commit();
         } catch (Exception e) {
