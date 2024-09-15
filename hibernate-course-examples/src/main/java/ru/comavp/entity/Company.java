@@ -1,15 +1,15 @@
 package ru.comavp.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "users")
+@EqualsAndHashCode(exclude = "users")
 @Builder
 @Entity
 @Table(schema = "hibernate_course_schema")
@@ -20,4 +20,7 @@ public class Company {
     private Integer id;
 
     private String name;
+
+    @OneToMany(mappedBy = "company")
+    private Set<User> users;
 }

@@ -32,7 +32,6 @@ public class User {
     @Type(type = "jsonb")
     private String info;
 
-//    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "company_id")
     private Company company;

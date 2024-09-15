@@ -1,25 +1,25 @@
 package ru.comavp;
 
+import lombok.Cleanup;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import ru.comavp.entity.Birthday;
-import ru.comavp.entity.User;
+import ru.comavp.entity.Company;
+import ru.comavp.util.HibernateUtil;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+@Slf4j
 class HibernateRunnerTest {
 
+    @Test
+    void oneToMany() {
+        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup var session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        var company = session.get(Company.class, 5);
+        log.info("Company: {}", company);
+
+        session.getTransaction().commit();
+    }
 
 //    @Test
 //    void checkGetReflectionApi() throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -35,14 +35,11 @@ class HibernateRunnerTest {
 //            field.set(user, resultSet.getString(field.getName()));
 //        }
 //    }
-
+//
 //    @Test
 //    void checkReflectionApi() throws SQLException, IllegalAccessException {
 //        User user = User.builder()
 //                .userName("comavp@mail.ru")
-//                .firstName("Anton")
-//                .lastName("Plankin")
-//                .birthDate(new Birthday(LocalDate.of(1993, 10, 19)))
 //                .build();
 //
 //        String sql = """
