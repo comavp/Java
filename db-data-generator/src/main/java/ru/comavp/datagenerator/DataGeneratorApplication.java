@@ -1,10 +1,11 @@
-/**
- * @author Claude Desktop
- */
 package ru.comavp.datagenerator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+/**
+ * @author Claude Desktop
+ */
 
 @SpringBootApplication
 public class DataGeneratorApplication {

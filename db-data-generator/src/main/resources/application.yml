@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: data-generator
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: ${username}
+    password: ${password}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+
+# Настройки генератора данных
+data:
+  generator:
+    records-count: 9000000  # Количество записей для генерации
+    batch-size: 1000       # Размер батча для вставки
+
+logging:
+  level:
+    com.example.datagenerator: INFO
+    org.hibernate.SQL: ERROR

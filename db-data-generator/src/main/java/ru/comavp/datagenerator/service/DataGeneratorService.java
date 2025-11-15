@@ -1,21 +1,22 @@
-/**
- * @author Claude Desktop
- */
-package com.example.datagenerator.service;
+package ru.comavp.datagenerator.service;
 
-import com.example.datagenerator.entity.Employee;
-import com.example.datagenerator.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.comavp.datagenerator.entity.Employee;
+import ru.comavp.datagenerator.repository.EmployeeRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+/**
+ * @author Claude Desktop
+ */
 
 @Service
 @RequiredArgsConstructor
