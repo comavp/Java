@@ -1,0 +1,30 @@
+POST http://localhost:8080/api/products
+Content-Type: application/json
+
+{
+    "name": "first product",
+    "description": "first description"
+}
+
+###
+GET http://localhost:8080/api/products
+
+###
+PUT http://localhost:8080/api/products/1
+Content-Type: application/json
+
+{
+    "name": "first_updated"
+}
+
+###
+DELETE http://localhost:8080/api/products/2
+
+###
+PATCH http://localhost:8080/api/products/1
+Content-Type: application/json
+
+{
+    "description": "second_updated"
+}
+
