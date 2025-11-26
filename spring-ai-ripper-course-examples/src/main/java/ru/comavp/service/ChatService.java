@@ -54,11 +54,19 @@ public class ChatService {
         chat.addChatEntry(ChatEntry.builder().content(prompt).role(role).build());
     }
 
-    @Transactional
-    public void proceedInteraction(Long chatId, String prompt) {
-        myProxy.addChatEntry(chatId, prompt, USER);
-        String answer = chatClient.prompt().user(prompt).call().content();
-        myProxy.addChatEntry(chatId, answer, ASSISTANT);
+    public SseEmitter proceedInteractionWithStreaming(Long chatId, String userPrompt) {
+        myProxy.addChatEntry(chatId, userPrompt, USER);
+
+        SseEmitter sseEmitter = new SseEmitter(0L);
+        final StringBuilder answer = new StringBuilder();
+
+        chatClient.prompt().user(userPrompt).stream()
+                .chatResponse()
+                .subscribe((ChatResponse response) -> processToken(response, sseEmitter, answer),
+                        sseEmitter::completeWithError,
+                        () -> myProxy.addChatEntry(chatId, answer.toString(), ASSISTANT));
+
+        return sseEmitter;
     }
 
     @SneakyThrows
