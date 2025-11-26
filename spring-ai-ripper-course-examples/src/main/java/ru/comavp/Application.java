@@ -15,6 +15,6 @@ public class Application {
 
     public static void main(String[] args) {
         ChatClient chatClient = SpringApplication.run(Application.class, args).getBean(ChatClient.class);
-        System.out.println(chatClient.prompt().user("Дай первую строку богемской рапсодии").call().content());
+        //System.out.println(chatClient.prompt().user("Дай первую строку Bohemian Rhapsody").call().content());
     }
 }
