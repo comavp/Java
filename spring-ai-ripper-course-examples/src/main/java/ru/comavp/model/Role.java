@@ -18,12 +18,14 @@ public enum Role {
         Message getMessage(String message) {
             return new UserMessage(message);
         }
-    }, ASSISTANT("assistant") {
+    },
+    ASSISTANT("assistant") {
         @Override
         Message getMessage(String message) {
             return new AssistantMessage(message);
         }
-    }, SYSTEM("system") {
+    },
+    SYSTEM("system") {
         @Override
         Message getMessage(String prompt) {
             return new SystemMessage(prompt);

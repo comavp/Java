@@ -2,6 +2,7 @@ package ru.comavp.service;
 
 import lombok.SneakyThrows;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -30,6 +31,9 @@ public class ChatService {
     @Autowired
     private ChatService myProxy;
 
+    @Autowired
+    private PostgresChatMemory postgresChatMemory;
+
     public List<Chat> getAllChats() {
         return chatRepo.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
@@ -48,23 +52,18 @@ public class ChatService {
         chatRepo.deleteById(chatId);
     }
 
-    @Transactional
-    public void addChatEntry(Long chatId, String prompt, Role role) {
-        Chat chat = chatRepo.findById(chatId).orElseThrow();
-        chat.addChatEntry(ChatEntry.builder().content(prompt).role(role).build());
-    }
-
     public SseEmitter proceedInteractionWithStreaming(Long chatId, String userPrompt) {
-        myProxy.addChatEntry(chatId, userPrompt, USER);
-
         SseEmitter sseEmitter = new SseEmitter(0L);
         final StringBuilder answer = new StringBuilder();
 
-        chatClient.prompt().user(userPrompt).stream()
+        chatClient.prompt().user(userPrompt)
+                .advisors(MessageChatMemoryAdvisor.builder(postgresChatMemory)
+                        .conversationId(String.valueOf(chatId))
+                        .build())
+                .stream()
                 .chatResponse()
                 .subscribe((ChatResponse response) -> processToken(response, sseEmitter, answer),
-                        sseEmitter::completeWithError,
-                        () -> myProxy.addChatEntry(chatId, answer.toString(), ASSISTANT));
+                        sseEmitter::completeWithError);
 
         return sseEmitter;
     }
