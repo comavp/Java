@@ -21,7 +21,6 @@ public class ChatEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "text") // change type from varchar(255) to text
     private String content;
 
     @Enumerated(EnumType.STRING)
