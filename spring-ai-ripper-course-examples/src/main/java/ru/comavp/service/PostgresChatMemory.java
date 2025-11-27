@@ -1,9 +1,8 @@
 package ru.comavp.service;
 
+import lombok.Builder;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.messages.Message;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.comavp.model.Chat;
 import ru.comavp.model.ChatEntry;
@@ -12,11 +11,11 @@ import ru.comavp.repository.ChatRepository;
 import java.util.Comparator;
 import java.util.List;
 
-@Component
+@Builder
 public class PostgresChatMemory implements ChatMemory {
 
-    @Autowired
     private ChatRepository chatMemoryRepository;
+    private int maxMessages;
 
     @Override
     @Transactional
@@ -29,14 +28,13 @@ public class PostgresChatMemory implements ChatMemory {
     }
 
     @Override
-    public List<Message> get(String conversationId, int maxMessages) {
+    public List<Message> get(String conversationId) {
         Chat chat = chatMemoryRepository.findById(Long.valueOf(conversationId)).orElseThrow();
         return chat.getHistory().stream()
-                .sorted(Comparator.comparing(ChatEntry::getCreatedAt))
+                .sorted(Comparator.comparing(ChatEntry::getCreatedAt).reversed())
                 .map(ChatEntry::toMessage)
-                .limit(maxMessages)
+                .limit(maxMessages) // todo skip(getHistory().size() - maxMessages)
                 .toList();
-
     }
 
     @Override
