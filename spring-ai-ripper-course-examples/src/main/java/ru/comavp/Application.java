@@ -2,6 +2,7 @@ package ru.comavp;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
@@ -38,7 +39,12 @@ public class Application {
 
     @Bean
     public ChatClient chatClient(ChatClient.Builder builder) {
-        return builder.defaultAdvisors(getHistoryAdvisor(), getRagAdvisor()).build();
+        return builder
+                .defaultAdvisors(
+                        getHistoryAdvisor(),
+                        SimpleLoggerAdvisor.builder().build(),
+                        getRagAdvisor())
+                .build();
     }
 
     private Advisor getHistoryAdvisor() {
@@ -56,7 +62,7 @@ public class Application {
 
     private ChatMemory getChatMemory() {
         return PostgresChatMemory.builder()
-                .maxMessages(2)
+                .maxMessages(8)
                 .chatMemoryRepository(chatRepository)
                 .build();
     }
