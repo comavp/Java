@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import ru.comavp.advisors.RagAdvisor;
 import ru.comavp.advisors.expansion.ExpansionQueryAdvisor;
 import ru.comavp.repository.ChatRepository;
 import ru.comavp.service.PostgresChatMemory;
@@ -50,7 +51,7 @@ public class Application {
                         getExpansionQueryAdvisor(0),
                         getHistoryAdvisor(10),
                         getLoggerAdvisor(20),
-                        getRagAdvisor(30),
+                        getCustomRagAdvisor(30),
                         getLoggerAdvisor(40))
                 .defaultOptions(OllamaOptions.builder()
                         .temperature(0.3)
@@ -65,7 +66,8 @@ public class Application {
         return MessageChatMemoryAdvisor.builder(getChatMemory()).order(order).build();
     }
 
-    private Advisor getRagAdvisor(int order) {
+    @Deprecated
+    private Advisor getRagAdvisor(int order) { // todo remove
         return QuestionAnswerAdvisor.builder(vectorStore)
                 .order(order)
                 .promptTemplate(new PromptTemplate(PROMPT_TEMPLATE))
@@ -74,6 +76,10 @@ public class Application {
                         .similarityThreshold(0.65)
                         .build())
                 .build();
+    }
+
+    private Advisor getCustomRagAdvisor(int order) {
+        return RagAdvisor.builder(vectorStore).order(order).build();
     }
 
     private Advisor getLoggerAdvisor(int order) {
