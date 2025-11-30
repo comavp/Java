@@ -9,9 +9,7 @@ import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import ru.comavp.advisors.expansion.ExpansionQueryAdvisor;
 
 import java.util.List;
 import java.util.Map;
@@ -42,10 +40,10 @@ public class RagAdvisor implements BaseAdvisor {
         List<Document> documents = vectorStore.similaritySearch(SearchRequest.builder()
                 .query(queryToRag)
                 .topK(4)
-                .similarityThreshold(0.5)
+                .similarityThreshold(0.65)
                 .build());
         if (CollectionUtils.isEmpty(documents)) {
-            return chatClientRequest;
+            return chatClientRequest.mutate().context("context", "Тут пусто - ни один документ не обнаружен.").build();
         }
         String ragContext = documents.stream().map(Document::getText).collect(Collectors.joining(System.lineSeparator()));
         String finalUserPrompt = template.render(Map.of("context", ragContext, "question", originalQuestion));

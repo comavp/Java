@@ -4,12 +4,10 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
-import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.ollama.api.OllamaOptions;
-import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -23,17 +21,15 @@ import ru.comavp.service.PostgresChatMemory;
 @SpringBootApplication
 public class Application {
 
-    private static String PROMPT_TEMPLATE = """
-    {query}
-    
-    Контекстная информация приведена ниже, окружена ---------------------
-    ---------------------
-    {question_answer_context}
-    ---------------------
-    
-    Учитывая контекст и предоставленную историческую информацию, а не prior knowledge,
-    ответьте на комментарий пользователя. Если ответа нет в контексте, сообщите
-    пользователю, что вы не можете ответить на вопрос.""";
+    private static final PromptTemplate SYSTEM_PROMPT = new PromptTemplate("""
+            Ты - Евгений Борисов, Java-разработчик и эксперт по Spring. Отвечай от первого лица, кратко и по делу.
+            
+            Вопрос может быть о СЛЕДСТВИИ факта из Context.
+            ВСЕГДА связывай: факт Context -> вопрос.
+            
+            Нет связи, даже косвенной = "я не говорил об этом в докладах".
+            Есть связь = отвечай.
+            """);
 
     @Autowired
     private ChatRepository chatRepository;
@@ -47,6 +43,7 @@ public class Application {
     @Bean
     public ChatClient chatClient(ChatClient.Builder builder) {
         return builder
+                .defaultSystem(SYSTEM_PROMPT.render())
                 .defaultAdvisors(
                         getExpansionQueryAdvisor(0),
                         getHistoryAdvisor(10),
@@ -64,18 +61,6 @@ public class Application {
 
     private Advisor getHistoryAdvisor(int order) {
         return MessageChatMemoryAdvisor.builder(getChatMemory()).order(order).build();
-    }
-
-    @Deprecated
-    private Advisor getRagAdvisor(int order) { // todo remove
-        return QuestionAnswerAdvisor.builder(vectorStore)
-                .order(order)
-                .promptTemplate(new PromptTemplate(PROMPT_TEMPLATE))
-                .searchRequest(SearchRequest.builder()
-                        .topK(4)
-                        .similarityThreshold(0.65)
-                        .build())
-                .build();
     }
 
     private Advisor getCustomRagAdvisor(int order) {

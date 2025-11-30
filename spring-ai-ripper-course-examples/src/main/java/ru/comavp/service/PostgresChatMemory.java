@@ -8,7 +8,6 @@ import ru.comavp.model.Chat;
 import ru.comavp.model.ChatEntry;
 import ru.comavp.repository.ChatRepository;
 
-import java.util.Comparator;
 import java.util.List;
 
 @Builder

@@ -25,13 +25,32 @@ public class ExpansionQueryAdvisor implements BaseAdvisor {
 
     private static final PromptTemplate template = PromptTemplate.builder()
             .template("""
-                    If the question contains any second-person references in Russian (such as "ты", "тебе", "у тебя", "тобой", etc.), reformulate the question by replacing them with references to Евгений Борисов.
-                    If there are no such references, return the question unchanged.
-                    
-                    Question: {question}
-                    Reformulated:
-                    """)
-            .build();
+                Instruction: Расширь поисковый запрос, добавив наиболее релевантные термины.
+                
+                СПЕЦИАЛИЗАЦИЯ ПО SPRING FRAMEWORK:
+                - Жизненный цикл Spring бинов: конструктор → BeanPostProcessor → PostConstruct → прокси → ContextListener
+                - Технологии: Dynamic Proxy, CGLib, reflection, аннотации, XML конфигурация
+                - Компоненты: BeanFactory, ApplicationContext, BeanDefinition, MBean, JMX
+                - Паттерны: dependency injection, AOP, профилирование, перехват методов
+
+                ПРАВИЛА:
+                1. Сохрани ВСЕ слова из исходного вопроса
+                2. Добавь МАКСИМУМ ПЯТЬ наиболее важных терминов
+                3. Выбирай самые специфичные и релевантные слова
+                4. Результат - простой список слов через пробел
+
+                СТРАТЕГИЯ ВЫБОРА:
+                - Приоритет: специализированные термины
+                - Избегай общих слов
+                - Фокусируйся на ключевых понятиях
+
+                ПРИМЕРЫ:
+                "что такое спринг" → "что такое спринг фреймворк Java"
+                "как создать файл" → "как создать файл документ программа"
+
+                Question: {question}
+                Expanded query:
+                """).build();
 
     public static ExpansionQueryAdvisorBuilder builder(ChatModel chatModel) {
         return new ExpansionQueryAdvisorBuilder().chatClient(ChatClient.builder(chatModel)
