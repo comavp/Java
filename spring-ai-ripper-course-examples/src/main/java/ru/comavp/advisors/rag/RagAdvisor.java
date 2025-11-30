@@ -1,4 +1,4 @@
-package ru.comavp.advisors;
+package ru.comavp.advisors.rag;
 
 import lombok.Builder;
 import org.springframework.ai.chat.client.ChatClientRequest;
@@ -26,6 +26,11 @@ public class RagAdvisor implements BaseAdvisor {
                     """).build();
 
     private VectorStore vectorStore;
+    @Builder.Default
+    private SearchRequest searchRequest = SearchRequest.builder()
+            .topK(4)
+            .similarityThreshold(0.62)
+            .build();
 
     private int order;
 
@@ -37,14 +42,20 @@ public class RagAdvisor implements BaseAdvisor {
     public ChatClientRequest before(ChatClientRequest chatClientRequest, AdvisorChain advisorChain) {
         String originalQuestion = chatClientRequest.prompt().getUserMessage().getText();
         String queryToRag = chatClientRequest.context().getOrDefault(ENRICHED_QUESTION, originalQuestion).toString();
-        List<Document> documents = vectorStore.similaritySearch(SearchRequest.builder()
+
+        List<Document> documents = vectorStore.similaritySearch(SearchRequest.from(searchRequest)
                 .query(queryToRag)
-                .topK(4)
-                .similarityThreshold(0.65)
+                .topK(searchRequest.getTopK() * 2)
                 .build());
+
         if (CollectionUtils.isEmpty(documents)) {
             return chatClientRequest.mutate().context("context", "Тут пусто - ни один документ не обнаружен.").build();
         }
+
+        var rerankEngine = BM25RerankEngine.builder().build();
+
+        documents = rerankEngine.rerank(documents, queryToRag, searchRequest.getTopK());
+
         String ragContext = documents.stream().map(Document::getText).collect(Collectors.joining(System.lineSeparator()));
         String finalUserPrompt = template.render(Map.of("context", ragContext, "question", originalQuestion));
         return chatClientRequest.mutate().prompt(chatClientRequest.prompt().augmentUserMessage(finalUserPrompt)).build();

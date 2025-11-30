@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import ru.comavp.advisors.RagAdvisor;
 import ru.comavp.advisors.expansion.ExpansionQueryAdvisor;
+import ru.comavp.advisors.rag.RagAdvisor;
 import ru.comavp.repository.ChatRepository;
 import ru.comavp.service.PostgresChatMemory;
 
