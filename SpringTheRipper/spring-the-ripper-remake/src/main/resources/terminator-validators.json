@@ -1,0 +1,12 @@
+{
+  "validators": [
+    {
+      "beanName": "dynamicValidator",
+      "className": "ru.comavp.puzzler2.service.DynamicTerminatorValidator",
+      "order": 16,
+      "lazy": true,
+      "scope": "singleton",
+      "description": "Dynamic validator registered via JSON configuration"
+    }
+  ]
+}
